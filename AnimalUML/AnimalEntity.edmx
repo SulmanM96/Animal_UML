@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="AnimalEntity.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="AnimalEntityTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="AnimalEntity" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="AnimalEntityContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Animals" EntityType="AnimalEntity.Animal" />
+          <EntitySet Name="ClassifiedAs" EntityType="AnimalEntity.ClassifiedAs" />
+          <EntitySet Name="AnimalKingdoms" EntityType="AnimalEntity.AnimalKingdom" />
+          <AssociationSet Name="AnimalFoodType" Association="AnimalEntity.AnimalFoodType">
+            <End EntitySet="Animals" Role="Animal" />
+            <End EntitySet="Hierachies" Role="FoodType" />
+          </AssociationSet>
+          <AssociationSet Name="AnimalAnimalKingdom" Association="AnimalEntity.AnimalAnimalKingdom">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="AnimalKingdom" EntitySet="AnimalKingdoms" />
+          </AssociationSet>
+          <AssociationSet Name="AnimalClassifiedAs" Association="AnimalEntity.AnimalClassifiedAs">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="ClassifiedAs" EntitySet="ClassifiedAs" />
+          </AssociationSet>
+          <EntitySet Name="Families" EntityType="AnimalEntity.Family" />
+          <AssociationSet Name="AnimalAnimalType" Association="AnimalEntity.AnimalAnimalType">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="AnimalType" EntitySet="Families" />
+          </AssociationSet>
+          <EntitySet Name="Habitats" EntityType="AnimalEntity.Habitat" />
+          <EntitySet Name="TypicalSizes" EntityType="AnimalEntity.TypicalSize" />
+          <EntitySet Name="Predators" EntityType="AnimalEntity.Predators" />
+          <EntitySet Name="LifeSpans" EntityType="AnimalEntity.LifeSpan" />
+          <AssociationSet Name="ClassifiedAsPreserved" Association="AnimalEntity.ClassifiedAsPreserved">
+            <End Role="ClassifiedAs" EntitySet="ClassifiedAs" />
+            <End Role="Preserved" EntitySet="Zoos" />
+          </AssociationSet>
+          <AssociationSet Name="AnimalHabitat" Association="AnimalEntity.AnimalHabitat">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="Habitat" EntitySet="Habitats" />
+          </AssociationSet>
+          <AssociationSet Name="AnimalTypicalSize" Association="AnimalEntity.AnimalTypicalSize">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="TypicalSize" EntitySet="TypicalSizes" />
+          </AssociationSet>
+          <EntitySet Name="Zoos" EntityType="AnimalEntity.Zoo" />
+          <AssociationSet Name="AnimalLifeSpan" Association="AnimalEntity.AnimalLifeSpan">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="LifeSpan" EntitySet="LifeSpans" />
+          </AssociationSet>
+          <EntitySet Name="Hierachies" EntityType="AnimalEntity.Hierachy" />
+          <AssociationSet Name="AnimalZoo" Association="AnimalEntity.AnimalZoo">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="Zoo" EntitySet="Zoos" />
+          </AssociationSet>
+          <AssociationSet Name="HabitatZoo" Association="AnimalEntity.HabitatZoo">
+            <End Role="Habitat" EntitySet="Habitats" />
+            <End Role="Zoo" EntitySet="Zoos" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Animal">
+          <Key>
+            <PropertyRef Name="AnimalId" />
+          </Key>
+          <Property Name="AnimalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnimalName" Type="String" Nullable="false" />
+          <Property Name="ScientificName" Type="String" Nullable="false" />
+          <Property Name="Population" Type="String" Nullable="false" />
+          <NavigationProperty Name="FoodTypes" Relationship="AnimalEntity.AnimalFoodType" FromRole="Animal" ToRole="FoodType" />
+          <NavigationProperty Name="AnimalKingdoms" Relationship="AnimalEntity.AnimalAnimalKingdom" FromRole="Animal" ToRole="AnimalKingdom" />
+          <NavigationProperty Name="ClassifiedAs" Relationship="AnimalEntity.AnimalClassifiedAs" FromRole="Animal" ToRole="ClassifiedAs" />
+          <NavigationProperty Name="AnimalTypes" Relationship="AnimalEntity.AnimalAnimalType" FromRole="Animal" ToRole="AnimalType" />
+          <NavigationProperty Name="Habitats" Relationship="AnimalEntity.AnimalHabitat" FromRole="Animal" ToRole="Habitat" />
+          <NavigationProperty Name="TypicalSizes" Relationship="AnimalEntity.AnimalTypicalSize" FromRole="Animal" ToRole="TypicalSize" />
+          <NavigationProperty Name="LifeSpans" Relationship="AnimalEntity.AnimalLifeSpan" FromRole="Animal" ToRole="LifeSpan" />
+          <NavigationProperty Name="Zoos" Relationship="AnimalEntity.AnimalZoo" FromRole="Animal" ToRole="Zoo" />
+        </EntityType>
+        <EntityType Name="FoodType" BaseType="AnimalEntity.Hierachy">
+          <Property Name="FoodTypeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Herbivore" Nullable="false" Type="String" />
+          <Property Name="Carnivore" Nullable="false" Type="String" />
+          <Property Name="Omnivore" Nullable="false" Type="String" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalFoodType" FromRole="FoodType" ToRole="Animal" />
+        </EntityType>
+        <EntityType Name="ClassifiedAs">
+          <Key>
+            <PropertyRef Name="ClassifiedAsId" />
+          </Key>
+          <Property Name="ClassifiedAsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Extinct" Type="String" Nullable="false" />
+          <Property Name="Endangered" Type="String" Nullable="false" />
+          <Property Name="CriticallyThreatened" Type="String" Nullable="false" />
+          <Property Name="NearThreatened" Type="String" Nullable="false" />
+          <Property Name="Vulnerable" Type="String" Nullable="false" />
+          <Property Name="LeastConcern" Type="String" Nullable="false" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalClassifiedAs" FromRole="ClassifiedAs" ToRole="Animal" />
+          <NavigationProperty Name="Preserveds" Relationship="AnimalEntity.ClassifiedAsPreserved" FromRole="ClassifiedAs" ToRole="Preserved" />
+        </EntityType>
+        <EntityType Name="AnimalKingdom">
+          <Key>
+            <PropertyRef Name="AnimalKingdomId" />
+          </Key>
+          <Property Name="AnimalKingdomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NorthAmerica" Type="String" Nullable="false" />
+          <Property Name="Europe" Type="String" Nullable="false" />
+          <Property Name="SouthAmerica" Type="String" Nullable="false" />
+          <Property Name="Africa" Type="String" Nullable="false" />
+          <Property Name="Asia" Type="String" Nullable="false" />
+          <Property Name="Australia" Type="String" Nullable="false" />
+          <Property Name="Antartica" Type="String" Nullable="false" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalAnimalKingdom" FromRole="AnimalKingdom" ToRole="Animal" />
+        </EntityType>
+        <Association Name="AnimalFoodType">
+          <End Type="AnimalEntity.Animal" Multiplicity="1" Role="Animal" />
+          <End Type="AnimalEntity.FoodType" Multiplicity="1" Role="FoodType" />
+        </Association>
+        <Association Name="AnimalAnimalKingdom">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.AnimalKingdom" Role="AnimalKingdom" Multiplicity="*" />
+        </Association>
+        <Association Name="AnimalClassifiedAs">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.ClassifiedAs" Role="ClassifiedAs" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Family">
+          <Key>
+            <PropertyRef Name="FamilyId" />
+          </Key>
+          <Property Name="FamilyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Arachnid" Type="String" Nullable="false" />
+          <Property Name="Mammal" Type="String" Nullable="false" />
+          <Property Name="Fish" Type="String" Nullable="false" />
+          <Property Name="Amphibian" Type="String" Nullable="false" />
+          <Property Name="Reptile" Type="String" Nullable="false" />
+          <Property Name="Bird" Type="String" Nullable="false" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalAnimalType" FromRole="AnimalType" ToRole="Animal" />
+        </EntityType>
+        <Association Name="AnimalAnimalType">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.Family" Role="AnimalType" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Habitat">
+          <Key>
+            <PropertyRef Name="HabitatId" />
+          </Key>
+          <Property Name="HabitatId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalHabitat" FromRole="Habitat" ToRole="Animal" />
+          <Property Name="Mediterranean" Type="String" Nullable="false" />
+          <Property Name="TemperateGrassland" Type="String" Nullable="false" />
+          <Property Name="Tundra" Type="String" Nullable="false" />
+          <Property Name="HotDessert" Type="String" Nullable="false" />
+          <Property Name="TropicalRainforest" Type="String" Nullable="false" />
+          <Property Name="PolarIce" Type="String" Nullable="false" />
+          <Property Name="Savanna" Type="String" Nullable="false" />
+          <Property Name="Mountain" Type="String" Nullable="false" />
+          <Property Name="ConiferousForest" Type="String" Nullable="false" />
+          <Property Name="DeciduousForest" Type="String" Nullable="false" />
+          <NavigationProperty Name="Zoos" Relationship="AnimalEntity.HabitatZoo" FromRole="Habitat" ToRole="Zoo" />
+        </EntityType>
+        <EntityType Name="TypicalSize">
+          <Key>
+            <PropertyRef Name="TypicalSizeId" />
+          </Key>
+          <Property Name="TypicalSizeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalTypicalSize" FromRole="TypicalSize" ToRole="Animal" />
+          <Property Name="VerySmall" Type="String" Nullable="false" />
+          <Property Name="Small" Type="String" Nullable="false" />
+          <Property Name="Medium" Type="String" Nullable="false" />
+          <Property Name="Large" Type="String" Nullable="false" />
+          <Property Name="VeryLarge" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Predators">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="LifeSpan">
+          <Key>
+            <PropertyRef Name="LifeSpanId" />
+          </Key>
+          <Property Name="LifeSpanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fiveYears" Type="String" Nullable="false" />
+          <Property Name="fifteenYears" Type="String" Nullable="false" />
+          <Property Name="thirtyYears" Type="String" Nullable="false" />
+          <Property Name="fourtyfiveYears" Type="String" Nullable="false" />
+          <Property Name="sixtyYears" Type="String" Nullable="false" />
+          <Property Name="seventyFiveYears" Type="String" Nullable="false" />
+          <Property Name="ninetyYears" Type="String" Nullable="false" />
+          <Property Name="hundredplusYears" Type="String" Nullable="false" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalLifeSpan" FromRole="LifeSpan" ToRole="Animal" />
+        </EntityType>
+        <EntityType Name="Preserved" BaseType="AnimalEntity.Zoo">
+          <Property Name="PreservedId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ClassifiedA" Relationship="AnimalEntity.ClassifiedAsPreserved" FromRole="Preserved" ToRole="ClassifiedAs" />
+          <Property Name="Yes" Type="String" Nullable="false" />
+          <Property Name="No" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="ClassifiedAsPreserved">
+          <End Type="AnimalEntity.ClassifiedAs" Role="ClassifiedAs" Multiplicity="*" />
+          <End Type="AnimalEntity.Preserved" Role="Preserved" Multiplicity="1" />
+        </Association>
+        <Association Name="AnimalHabitat">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.Habitat" Role="Habitat" Multiplicity="*" />
+        </Association>
+        <Association Name="AnimalTypicalSize">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.TypicalSize" Role="TypicalSize" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Zoo">
+          <Key>
+            <PropertyRef Name="ZooId" />
+          </Key>
+          <Property Name="ZooId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Animal" Relationship="AnimalEntity.AnimalZoo" FromRole="Zoo" ToRole="Animal" />
+          <NavigationProperty Name="Habitat" Relationship="AnimalEntity.HabitatZoo" FromRole="Zoo" ToRole="Habitat" />
+        </EntityType>
+        <Association Name="AnimalLifeSpan">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.LifeSpan" Role="LifeSpan" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Hierachy">
+          <Key>
+            <PropertyRef Name="HierachyId" />
+          </Key>
+          <Property Name="HierachyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Prey" Type="String" Nullable="false" />
+          <Property Name="Predator" Type="String" Nullable="false" />
+          <Property Name="Both" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="AnimalZoo">
+          <End Type="AnimalEntity.Animal" Role="Animal" Multiplicity="1" />
+          <End Type="AnimalEntity.Zoo" Role="Zoo" Multiplicity="*" />
+        </Association>
+        <Association Name="HabitatZoo">
+          <End Type="AnimalEntity.Habitat" Role="Habitat" Multiplicity="1" />
+          <End Type="AnimalEntity.Zoo" Role="Zoo" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="AnimalEntity" />
+        <Alias Key="Target" Value="AnimalEntity.Store" />
+        <EntityContainerMapping CdmEntityContainer="AnimalEntityContainer" StorageEntityContainer="AnimalEntityTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
